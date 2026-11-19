@@ -1,0 +1,44 @@
+[
+  {
+    "file": "com_disagg_txt_2025.csv",
+    "url": "https://www.cftc.gov/files/dea/history/com_disagg_txt_2025.zip",
+    "archive_sha256": "727c78bb431fea3994a4c73cebafd17e33e0ae83bea199a66ff65b742e9b25bc",
+    "data_rows": 2
+  },
+  {
+    "file": "com_fin_txt_2025.csv",
+    "url": "https://www.cftc.gov/files/dea/history/com_fin_txt_2025.zip",
+    "archive_sha256": "caf7af4b41588fc83b6b599874fc95247f6df6d9146ceae0a3709f2e5dcb403f",
+    "data_rows": 2
+  },
+  {
+    "file": "deacot2025.csv",
+    "url": "https://www.cftc.gov/files/dea/history/deacot2025.zip",
+    "archive_sha256": "e5ae323dadda5ebbf69b6989af0d912fb1a4aebd954372f999eccb3a692352f9",
+    "data_rows": 2
+  },
+  {
+    "file": "deahistfo2025.csv",
+    "url": "https://www.cftc.gov/files/dea/history/deahistfo2025.zip",
+    "archive_sha256": "c9ec5dd8f6f302754486b3d0691115ab42c9f56398d4028cec20b48e94f72c04",
+    "data_rows": 2
+  },
+  {
+    "file": "fut_disagg_txt_2025.csv",
+    "url": "https://www.cftc.gov/files/dea/history/fut_disagg_txt_2025.zip",
+    "archive_sha256": "17ac2fef1b53303d01e486bbf5768a4e062308a3c34a2970871f3eab89829cbc",
+    "data_rows": 2
+  },
+  {
+    "file": "fut_fin_txt_2025.csv",
+    "url": "https://www.cftc.gov/files/dea/history/fut_fin_txt_2025.zip",
+    "archive_sha256": "2ea0cda6395f7dd6501c27422be3763e1f2f5b41b768cfd36b871f092a07d438",
+    "data_rows": 2
+  },
+  {
+    "file": "cboe_summary.html",
+    "url": "https://www.cboe.com/markets/us/futures/market-statistics/daily/futures/",
+    "html_sha256": "eecfc5c68ba197dae6ac567a54ea42f03373c1a3628060a151efe0969923cf52",
+    "note": "Two exact table excerpts; report heading date from document"
+  }
+]

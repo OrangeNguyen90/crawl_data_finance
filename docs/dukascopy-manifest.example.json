@@ -1,0 +1,17 @@
+﻿{
+  "symbol": "EURUSD",
+  "name": "Dukascopy EUR/USD spot bid",
+  "exchange": "DUKASCOPY_FX",
+  "asset_class": "fx_spot",
+  "currency": "USD",
+  "timeframe": "1m",
+  "timezone": "UTC",
+  "timestamp_format": "%d.%m.%Y %H:%M:%S.%f",
+  "price_type": "bid",
+  "volume_type": "quote",
+  "source_url": "https://www.dukascopy.com/swiss/english/marketwatch/historical/",
+  "license_status": "unverified",
+  "header": true,
+  "encoding": "utf-8-sig"
+}
+

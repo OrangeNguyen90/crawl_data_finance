@@ -1,0 +1,10 @@
+﻿{
+  "version": "2.0.0",
+  "tasks": [
+    {"label":"Django: run local server", "type":"process", "command":"${workspaceFolder}/.venv/Scripts/python.exe", "args":["manage.py","runserver","127.0.0.1:8000"], "problemMatcher":[], "isBackground":true},
+    {"label":"Django: check", "type":"process", "command":"${workspaceFolder}/.venv/Scripts/python.exe", "args":["manage.py","check"], "problemMatcher":[]},
+    {"label":"Tests: isolated SQLite", "type":"process", "command":"${workspaceFolder}/.venv/Scripts/python.exe", "args":["-m","pytest","-q"], "options":{"env":{"MARKETDATA_SQLITE_TEST":"1"}}, "problemMatcher":[]},
+    {"label":"Collectors: one worker tick", "type":"process", "command":"${workspaceFolder}/.venv/Scripts/python.exe", "args":["manage.py","run_collectors","--schedule","--retry-failed"], "problemMatcher":[]}
+  ]
+}
+

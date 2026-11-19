@@ -1,0 +1,2160 @@
+openapi: 3.0.3
+info:
+  title: Market Data API
+  version: '2.0'
+paths:
+  /api/v1/collector/jobs/:
+    get:
+      operationId: v1_collector_jobs_list
+      parameters:
+      - in: query
+        name: asset_class
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: exchange
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: futures_options_scope
+        schema:
+          enum:
+          - futures_only
+          - combined
+          type: string
+          minLength: 1
+        description: |-
+          * `futures_only` - futures_only
+          * `combined` - combined
+      - in: query
+        name: instrument
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: market_code
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: price_type
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: report_status
+        schema:
+          enum:
+          - preliminary
+          - final
+          - unspecified
+          type: string
+          minLength: 1
+        description: |-
+          * `preliminary` - preliminary
+          * `final` - final
+          * `unspecified` - unspecified
+      - in: query
+        name: report_type
+        schema:
+          enum:
+          - legacy
+          - disaggregated
+          - tff
+          type: string
+          minLength: 1
+        description: |-
+          * `legacy` - legacy
+          * `disaggregated` - disaggregated
+          * `tff` - tff
+      - in: query
+        name: resolution_status
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      - in: query
+        name: severity
+        schema:
+          enum:
+          - INFO
+          - WARNING
+          - ERROR
+          - CRITICAL
+          type: string
+          minLength: 1
+        description: |-
+          * `INFO` - INFO
+          * `WARNING` - WARNING
+          * `ERROR` - ERROR
+          * `CRITICAL` - CRITICAL
+      - in: query
+        name: source
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: status
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: symbol
+        schema:
+          type: string
+          maxLength: 100
+          minLength: 1
+      - in: query
+        name: timeframe
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedJobList'
+          description: ''
+  /api/v1/collectors/actions/:
+    post:
+      operationId: v1_collectors_actions_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionQuery'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ActionQuery'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ActionQuery'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/collectors/jobs/:
+    get:
+      operationId: v1_collectors_jobs_list
+      parameters:
+      - in: query
+        name: asset_class
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: exchange
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: futures_options_scope
+        schema:
+          enum:
+          - futures_only
+          - combined
+          type: string
+          minLength: 1
+        description: |-
+          * `futures_only` - futures_only
+          * `combined` - combined
+      - in: query
+        name: instrument
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: market_code
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: price_type
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: report_status
+        schema:
+          enum:
+          - preliminary
+          - final
+          - unspecified
+          type: string
+          minLength: 1
+        description: |-
+          * `preliminary` - preliminary
+          * `final` - final
+          * `unspecified` - unspecified
+      - in: query
+        name: report_type
+        schema:
+          enum:
+          - legacy
+          - disaggregated
+          - tff
+          type: string
+          minLength: 1
+        description: |-
+          * `legacy` - legacy
+          * `disaggregated` - disaggregated
+          * `tff` - tff
+      - in: query
+        name: resolution_status
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      - in: query
+        name: severity
+        schema:
+          enum:
+          - INFO
+          - WARNING
+          - ERROR
+          - CRITICAL
+          type: string
+          minLength: 1
+        description: |-
+          * `INFO` - INFO
+          * `WARNING` - WARNING
+          * `ERROR` - ERROR
+          * `CRITICAL` - CRITICAL
+      - in: query
+        name: source
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: status
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: symbol
+        schema:
+          type: string
+          maxLength: 100
+          minLength: 1
+      - in: query
+        name: timeframe
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedJobList'
+          description: ''
+  /api/v1/cot/:
+    get:
+      operationId: v1_cot_list
+      parameters:
+      - in: query
+        name: asset_class
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: exchange
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: futures_options_scope
+        schema:
+          enum:
+          - futures_only
+          - combined
+          type: string
+          minLength: 1
+        description: |-
+          * `futures_only` - futures_only
+          * `combined` - combined
+      - in: query
+        name: instrument
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: market_code
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: price_type
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: report_status
+        schema:
+          enum:
+          - preliminary
+          - final
+          - unspecified
+          type: string
+          minLength: 1
+        description: |-
+          * `preliminary` - preliminary
+          * `final` - final
+          * `unspecified` - unspecified
+      - in: query
+        name: report_type
+        schema:
+          enum:
+          - legacy
+          - disaggregated
+          - tff
+          type: string
+          minLength: 1
+        description: |-
+          * `legacy` - legacy
+          * `disaggregated` - disaggregated
+          * `tff` - tff
+      - in: query
+        name: resolution_status
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      - in: query
+        name: severity
+        schema:
+          enum:
+          - INFO
+          - WARNING
+          - ERROR
+          - CRITICAL
+          type: string
+          minLength: 1
+        description: |-
+          * `INFO` - INFO
+          * `WARNING` - WARNING
+          * `ERROR` - ERROR
+          * `CRITICAL` - CRITICAL
+      - in: query
+        name: source
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: status
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: symbol
+        schema:
+          type: string
+          maxLength: 100
+          minLength: 1
+      - in: query
+        name: timeframe
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCotList'
+          description: ''
+  /api/v1/data-quality/:
+    get:
+      operationId: v1_data_quality_list
+      parameters:
+      - in: query
+        name: asset_class
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: exchange
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: futures_options_scope
+        schema:
+          enum:
+          - futures_only
+          - combined
+          type: string
+          minLength: 1
+        description: |-
+          * `futures_only` - futures_only
+          * `combined` - combined
+      - in: query
+        name: instrument
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: market_code
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: price_type
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: report_status
+        schema:
+          enum:
+          - preliminary
+          - final
+          - unspecified
+          type: string
+          minLength: 1
+        description: |-
+          * `preliminary` - preliminary
+          * `final` - final
+          * `unspecified` - unspecified
+      - in: query
+        name: report_type
+        schema:
+          enum:
+          - legacy
+          - disaggregated
+          - tff
+          type: string
+          minLength: 1
+        description: |-
+          * `legacy` - legacy
+          * `disaggregated` - disaggregated
+          * `tff` - tff
+      - in: query
+        name: resolution_status
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      - in: query
+        name: severity
+        schema:
+          enum:
+          - INFO
+          - WARNING
+          - ERROR
+          - CRITICAL
+          type: string
+          minLength: 1
+        description: |-
+          * `INFO` - INFO
+          * `WARNING` - WARNING
+          * `ERROR` - ERROR
+          * `CRITICAL` - CRITICAL
+      - in: query
+        name: source
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: status
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: symbol
+        schema:
+          type: string
+          maxLength: 100
+          minLength: 1
+      - in: query
+        name: timeframe
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedQualityList'
+          description: ''
+  /api/v1/datasets/:
+    get:
+      operationId: v1_datasets_list
+      parameters:
+      - in: query
+        name: asset_class
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: exchange
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: futures_options_scope
+        schema:
+          enum:
+          - futures_only
+          - combined
+          type: string
+          minLength: 1
+        description: |-
+          * `futures_only` - futures_only
+          * `combined` - combined
+      - in: query
+        name: instrument
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: market_code
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: price_type
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: report_status
+        schema:
+          enum:
+          - preliminary
+          - final
+          - unspecified
+          type: string
+          minLength: 1
+        description: |-
+          * `preliminary` - preliminary
+          * `final` - final
+          * `unspecified` - unspecified
+      - in: query
+        name: report_type
+        schema:
+          enum:
+          - legacy
+          - disaggregated
+          - tff
+          type: string
+          minLength: 1
+        description: |-
+          * `legacy` - legacy
+          * `disaggregated` - disaggregated
+          * `tff` - tff
+      - in: query
+        name: resolution_status
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      - in: query
+        name: severity
+        schema:
+          enum:
+          - INFO
+          - WARNING
+          - ERROR
+          - CRITICAL
+          type: string
+          minLength: 1
+        description: |-
+          * `INFO` - INFO
+          * `WARNING` - WARNING
+          * `ERROR` - ERROR
+          * `CRITICAL` - CRITICAL
+      - in: query
+        name: source
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: status
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: symbol
+        schema:
+          type: string
+          maxLength: 100
+          minLength: 1
+      - in: query
+        name: timeframe
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDatasetList'
+          description: ''
+  /api/v1/export/{dataset}/:
+    get:
+      operationId: v1_export_retrieve
+      parameters:
+      - in: query
+        name: asset_class
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: path
+        name: dataset
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: exchange
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: futures_options_scope
+        schema:
+          enum:
+          - futures_only
+          - combined
+          type: string
+          minLength: 1
+        description: |-
+          * `futures_only` - futures_only
+          * `combined` - combined
+      - in: query
+        name: instrument
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: market_code
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: price_type
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: report_status
+        schema:
+          enum:
+          - preliminary
+          - final
+          - unspecified
+          type: string
+          minLength: 1
+        description: |-
+          * `preliminary` - preliminary
+          * `final` - final
+          * `unspecified` - unspecified
+      - in: query
+        name: report_type
+        schema:
+          enum:
+          - legacy
+          - disaggregated
+          - tff
+          type: string
+          minLength: 1
+        description: |-
+          * `legacy` - legacy
+          * `disaggregated` - disaggregated
+          * `tff` - tff
+      - in: query
+        name: resolution_status
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      - in: query
+        name: severity
+        schema:
+          enum:
+          - INFO
+          - WARNING
+          - ERROR
+          - CRITICAL
+          type: string
+          minLength: 1
+        description: |-
+          * `INFO` - INFO
+          * `WARNING` - WARNING
+          * `ERROR` - ERROR
+          * `CRITICAL` - CRITICAL
+      - in: query
+        name: source
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: status
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: symbol
+        schema:
+          type: string
+          maxLength: 100
+          minLength: 1
+      - in: query
+        name: timeframe
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+          description: ''
+  /api/v1/health/:
+    get:
+      operationId: v1_health_retrieve
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '503':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/instruments/:
+    get:
+      operationId: v1_instruments_list
+      parameters:
+      - in: query
+        name: asset_class
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: exchange
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: futures_options_scope
+        schema:
+          enum:
+          - futures_only
+          - combined
+          type: string
+          minLength: 1
+        description: |-
+          * `futures_only` - futures_only
+          * `combined` - combined
+      - in: query
+        name: instrument
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: market_code
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: price_type
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: report_status
+        schema:
+          enum:
+          - preliminary
+          - final
+          - unspecified
+          type: string
+          minLength: 1
+        description: |-
+          * `preliminary` - preliminary
+          * `final` - final
+          * `unspecified` - unspecified
+      - in: query
+        name: report_type
+        schema:
+          enum:
+          - legacy
+          - disaggregated
+          - tff
+          type: string
+          minLength: 1
+        description: |-
+          * `legacy` - legacy
+          * `disaggregated` - disaggregated
+          * `tff` - tff
+      - in: query
+        name: resolution_status
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      - in: query
+        name: severity
+        schema:
+          enum:
+          - INFO
+          - WARNING
+          - ERROR
+          - CRITICAL
+          type: string
+          minLength: 1
+        description: |-
+          * `INFO` - INFO
+          * `WARNING` - WARNING
+          * `ERROR` - ERROR
+          * `CRITICAL` - CRITICAL
+      - in: query
+        name: source
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: status
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: symbol
+        schema:
+          type: string
+          maxLength: 100
+          minLength: 1
+      - in: query
+        name: timeframe
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInstrumentList'
+          description: ''
+  /api/v1/ohlcv/:
+    get:
+      operationId: v1_ohlcv_list
+      parameters:
+      - in: query
+        name: asset_class
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: exchange
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: futures_options_scope
+        schema:
+          enum:
+          - futures_only
+          - combined
+          type: string
+          minLength: 1
+        description: |-
+          * `futures_only` - futures_only
+          * `combined` - combined
+      - in: query
+        name: instrument
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: market_code
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: price_type
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: report_status
+        schema:
+          enum:
+          - preliminary
+          - final
+          - unspecified
+          type: string
+          minLength: 1
+        description: |-
+          * `preliminary` - preliminary
+          * `final` - final
+          * `unspecified` - unspecified
+      - in: query
+        name: report_type
+        schema:
+          enum:
+          - legacy
+          - disaggregated
+          - tff
+          type: string
+          minLength: 1
+        description: |-
+          * `legacy` - legacy
+          * `disaggregated` - disaggregated
+          * `tff` - tff
+      - in: query
+        name: resolution_status
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      - in: query
+        name: severity
+        schema:
+          enum:
+          - INFO
+          - WARNING
+          - ERROR
+          - CRITICAL
+          type: string
+          minLength: 1
+        description: |-
+          * `INFO` - INFO
+          * `WARNING` - WARNING
+          * `ERROR` - ERROR
+          * `CRITICAL` - CRITICAL
+      - in: query
+        name: source
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: status
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: symbol
+        schema:
+          type: string
+          maxLength: 100
+          minLength: 1
+      - in: query
+        name: timeframe
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOhlcvList'
+          description: ''
+  /api/v1/open-interest/:
+    get:
+      operationId: v1_open_interest_list
+      parameters:
+      - in: query
+        name: asset_class
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: exchange
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: futures_options_scope
+        schema:
+          enum:
+          - futures_only
+          - combined
+          type: string
+          minLength: 1
+        description: |-
+          * `futures_only` - futures_only
+          * `combined` - combined
+      - in: query
+        name: instrument
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: market_code
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: price_type
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: report_status
+        schema:
+          enum:
+          - preliminary
+          - final
+          - unspecified
+          type: string
+          minLength: 1
+        description: |-
+          * `preliminary` - preliminary
+          * `final` - final
+          * `unspecified` - unspecified
+      - in: query
+        name: report_type
+        schema:
+          enum:
+          - legacy
+          - disaggregated
+          - tff
+          type: string
+          minLength: 1
+        description: |-
+          * `legacy` - legacy
+          * `disaggregated` - disaggregated
+          * `tff` - tff
+      - in: query
+        name: resolution_status
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      - in: query
+        name: severity
+        schema:
+          enum:
+          - INFO
+          - WARNING
+          - ERROR
+          - CRITICAL
+          type: string
+          minLength: 1
+        description: |-
+          * `INFO` - INFO
+          * `WARNING` - WARNING
+          * `ERROR` - ERROR
+          * `CRITICAL` - CRITICAL
+      - in: query
+        name: source
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: status
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: symbol
+        schema:
+          type: string
+          maxLength: 100
+          minLength: 1
+      - in: query
+        name: timeframe
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedStatisticList'
+          description: ''
+  /api/v1/overview/:
+    get:
+      operationId: v1_overview_retrieve
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/sources/:
+    get:
+      operationId: v1_sources_list
+      parameters:
+      - in: query
+        name: asset_class
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: exchange
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: futures_options_scope
+        schema:
+          enum:
+          - futures_only
+          - combined
+          type: string
+          minLength: 1
+        description: |-
+          * `futures_only` - futures_only
+          * `combined` - combined
+      - in: query
+        name: instrument
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: market_code
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: price_type
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: report_status
+        schema:
+          enum:
+          - preliminary
+          - final
+          - unspecified
+          type: string
+          minLength: 1
+        description: |-
+          * `preliminary` - preliminary
+          * `final` - final
+          * `unspecified` - unspecified
+      - in: query
+        name: report_type
+        schema:
+          enum:
+          - legacy
+          - disaggregated
+          - tff
+          type: string
+          minLength: 1
+        description: |-
+          * `legacy` - legacy
+          * `disaggregated` - disaggregated
+          * `tff` - tff
+      - in: query
+        name: resolution_status
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      - in: query
+        name: severity
+        schema:
+          enum:
+          - INFO
+          - WARNING
+          - ERROR
+          - CRITICAL
+          type: string
+          minLength: 1
+        description: |-
+          * `INFO` - INFO
+          * `WARNING` - WARNING
+          * `ERROR` - ERROR
+          * `CRITICAL` - CRITICAL
+      - in: query
+        name: source
+        schema:
+          type: string
+          maxLength: 40
+          minLength: 1
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: status
+        schema:
+          type: string
+          maxLength: 30
+          minLength: 1
+      - in: query
+        name: symbol
+        schema:
+          type: string
+          maxLength: 100
+          minLength: 1
+      - in: query
+        name: timeframe
+        schema:
+          type: string
+          maxLength: 20
+          minLength: 1
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSourceList'
+          description: ''
+components:
+  schemas:
+    ActionEnum:
+      enum:
+      - enable
+      - disable
+      - sync
+      - backfill
+      - cancel
+      type: string
+      description: |-
+        * `enable` - enable
+        * `disable` - disable
+        * `sync` - sync
+        * `backfill` - backfill
+        * `cancel` - cancel
+    ActionQuery:
+      type: object
+      properties:
+        source:
+          type: string
+          maxLength: 40
+        action:
+          $ref: '#/components/schemas/ActionEnum'
+        start:
+          type: string
+          format: date
+        end:
+          type: string
+          format: date
+        report_type:
+          $ref: '#/components/schemas/ReportTypeEnum'
+        scope:
+          $ref: '#/components/schemas/ScopeEnum'
+        market_code:
+          type: string
+          maxLength: 40
+      required:
+      - action
+      - source
+    Cot:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        report_date:
+          type: string
+          format: date
+        publication_date:
+          type: string
+          format: date
+          nullable: true
+        market_code:
+          type: string
+          maxLength: 40
+        market_name:
+          type: string
+          maxLength: 255
+        report_type:
+          type: string
+          maxLength: 40
+        futures_options_scope:
+          type: string
+          maxLength: 40
+        open_interest:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        trader_positions: {}
+        raw_fields: {}
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        source:
+          type: integer
+        source_file:
+          type: integer
+      required:
+      - futures_options_scope
+      - id
+      - market_code
+      - report_date
+      - report_type
+      - source
+      - source_file
+      - updated_at
+    Dataset:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        dataset_name:
+          type: string
+          maxLength: 255
+        provider:
+          type: string
+          maxLength: 100
+        original_publisher:
+          type: string
+          maxLength: 100
+        dataset_url:
+          type: string
+          format: uri
+          maxLength: 1000
+        exchange_coverage: {}
+        instruments: {}
+        data_type:
+          type: string
+          maxLength: 60
+        frequency:
+          type: string
+          maxLength: 40
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        last_updated:
+          type: string
+          format: date
+          nullable: true
+        license:
+          type: string
+          maxLength: 255
+        redistribution_permission:
+          type: string
+          maxLength: 30
+        commercial_use_permission:
+          type: string
+          maxLength: 30
+        data_provenance:
+          type: string
+        verification_status:
+          type: string
+          maxLength: 30
+      required:
+      - dataset_name
+      - dataset_url
+      - id
+      - provider
+    Instrument:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        exchange:
+          type: string
+          maxLength: 40
+        symbol:
+          type: string
+          maxLength: 100
+        canonical_symbol:
+          type: string
+          maxLength: 100
+        instrument_name:
+          type: string
+          maxLength: 255
+        asset_class:
+          type: string
+          maxLength: 40
+        contract_type:
+          type: string
+          maxLength: 40
+        currency:
+          type: string
+          maxLength: 10
+        contract_size:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,8})?$
+          nullable: true
+        tick_size:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,8})?$
+          nullable: true
+        expiration_date:
+          type: string
+          format: date
+          nullable: true
+        metadata: {}
+      required:
+      - exchange
+      - id
+      - instrument_name
+      - symbol
+    Job:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        job_type:
+          type: string
+          maxLength: 30
+        started_at:
+          type: string
+          format: date-time
+          readOnly: true
+        finished_at:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          type: string
+          maxLength: 30
+        records_downloaded:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        records_inserted:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        records_updated:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        records_rejected:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        error_message:
+          type: string
+        retry_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        attempt_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        parameters: {}
+        cancel_requested:
+          type: boolean
+        heartbeat_at:
+          type: string
+          format: date-time
+          nullable: true
+        source:
+          type: integer
+      required:
+      - id
+      - job_type
+      - source
+      - started_at
+    Ohlcv:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        timeframe:
+          type: string
+          maxLength: 20
+        timestamp_utc:
+          type: string
+          format: date-time
+        open:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,8})?$
+        high:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,8})?$
+        low:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,8})?$
+        close:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,8})?$
+        volume:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,16}(?:\.\d{0,8})?$
+          nullable: true
+        volume_type:
+          type: string
+          maxLength: 30
+        price_type:
+          type: string
+          maxLength: 30
+        raw_fields: {}
+        instrument:
+          type: integer
+        source:
+          type: integer
+        source_file:
+          type: integer
+      required:
+      - close
+      - high
+      - id
+      - instrument
+      - low
+      - open
+      - price_type
+      - source
+      - source_file
+      - timeframe
+      - timestamp_utc
+      - volume_type
+    PaginatedCotList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cot'
+    PaginatedDatasetList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dataset'
+    PaginatedInstrumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Instrument'
+    PaginatedJobList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Job'
+    PaginatedOhlcvList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ohlcv'
+    PaginatedQualityList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Quality'
+    PaginatedSourceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Source'
+    PaginatedStatisticList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Statistic'
+    Quality:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        dataset:
+          type: string
+          maxLength: 60
+        issue_type:
+          type: string
+          maxLength: 60
+        severity:
+          type: string
+          maxLength: 20
+        detected_at:
+          type: string
+          format: date-time
+          readOnly: true
+        description:
+          type: string
+        resolution_status:
+          type: string
+          maxLength: 20
+        source:
+          type: integer
+        instrument:
+          type: integer
+          nullable: true
+      required:
+      - dataset
+      - description
+      - detected_at
+      - id
+      - issue_type
+      - severity
+      - source
+    ReportTypeEnum:
+      enum:
+      - legacy
+      - disaggregated
+      - tff
+      type: string
+      description: |-
+        * `legacy` - legacy
+        * `disaggregated` - disaggregated
+        * `tff` - tff
+    ScopeEnum:
+      enum:
+      - futures_only
+      - combined
+      type: string
+      description: |-
+        * `futures_only` - futures_only
+        * `combined` - combined
+    Source:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 40
+        provider_type:
+          type: string
+          maxLength: 40
+        official_url:
+          type: string
+          format: uri
+          maxLength: 200
+        access_method:
+          type: string
+          maxLength: 40
+        data_frequency:
+          type: string
+          maxLength: 40
+        license_status:
+          type: string
+          maxLength: 40
+        enabled:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+      - official_url
+      - provider_type
+      - updated_at
+    Statistic:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        source_published_at:
+          type: string
+          format: date-time
+          readOnly: true
+        trading_date:
+          type: string
+          format: date
+        volume:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        open_interest:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        change_in_oi:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        report_status:
+          type: string
+          maxLength: 20
+        raw_fields: {}
+        instrument:
+          type: integer
+        source:
+          type: integer
+        source_file:
+          type: integer
+      required:
+      - id
+      - instrument
+      - report_status
+      - source
+      - source_file
+      - source_published_at
+      - trading_date
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

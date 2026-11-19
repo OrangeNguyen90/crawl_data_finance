@@ -1,0 +1,73 @@
+﻿<!doctype html>
+<html lang="vi">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Market Data · Operations</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1019;--panel:#121b29;--line:#263349;--muted:#9aaac1;--cyan:#60dac9}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#edf3ff;font:14px/1.6 system-ui,sans-serif}
+header{border-bottom:1px solid var(--line);padding:26px 4vw;display:flex;justify-content:space-between;gap:20px;align-items:center}
+h1{margin:0;font-size:26px;letter-spacing:-.6px}h2{font-size:19px;margin:0 0 16px}h3{font-size:14px;color:var(--muted)}
+small,.muted{color:var(--muted)}a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+main{max-width:1600px;margin:auto;padding:28px 4vw}nav{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:26px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card,section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card strong{display:block;font-size:30px;letter-spacing:-1px}.card span{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:1px}
+section{margin-top:24px;overflow:auto;scroll-margin-top:20px}table{width:100%;border-collapse:collapse;white-space:nowrap}
+td,th{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}th{color:var(--muted);font-size:12px;font-weight:500}
+td.error{white-space:normal;min-width:220px;max-width:500px;color:#ffaeb9}.pill{padding:3px 9px;border-radius:20px;background:#263349;font-size:12px}
+.success,.complete{color:#60dac9}.failed,.partial,.quarantined{color:#ffacac}.queued,.running{color:#f5ce86}
+form.inline{display:inline}button,input,select{font:inherit;background:#1d2a3c;color:#edf3ff;border:1px solid #3a4b65;border-radius:7px;padding:7px 10px}
+button{cursor:pointer}button:hover{border-color:var(--cyan)}.formrow{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
+label{display:grid;gap:4px;color:var(--muted);font-size:12px}.note{border-left:3px solid var(--cyan);padding:12px 16px;background:#13232c;margin:20px 0}
+details{margin:18px 0}summary{cursor:pointer;color:var(--cyan)}.empty{color:var(--muted);padding:28px}
+@media(max-width:850px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}header{align-items:start;flex-direction:column}.card strong{font-size:24px}}
+</style></head>
+<body><header><div><small>LOCAL RESEARCH INFRASTRUCTURE / V2.0</small><h1>Market Data Operations</h1></div>
+<div><a href="/api/docs/">API docs</a> &nbsp;·&nbsp; <a href="/admin/">Administration</a> &nbsp;·&nbsp; <a href="/">Refresh</a></div></header>
+<main><nav><a href="#overview">Overview</a><a href="#collectors">Collectors</a><a href="#explorer">Data explorer</a><a href="#quality">Data quality</a><a href="#exports">Export</a></nav>
+{% for message in messages %}<p class="note">{{ message }}</p>{% endfor %}
+<div class="cards" id="overview">
+<div class="card"><span>Sources / Active</span><strong>{{ total_sources }} / {{ active_sources }}</strong></div>
+<div class="card"><span>Instruments</span><strong>{{ instruments }}</strong></div>
+<div class="card"><span>Market records</span><strong>{{ total_records }}</strong></div>
+<div class="card"><span>Failed jobs</span><strong>{{ failed_jobs }}</strong></div>
+</div><p class="muted">Latest observation: {{ latest_date|default:"No observations" }} &nbsp;·&nbsp; Last successful sync: {{ last_sync|default:"No successful sync" }}</p>
+<section id="collectors"><h2>Collector monitoring</h2>
+<p class="muted">Enable/disable điều khiển nguồn. Sync/backfill đưa job vào hàng đợi; worker local xử lý. Stop yêu cầu hủy tại checkpoint an toàn. Không hiển thị phần trăm khi chưa biết tổng số record.</p>
+<table><thead><tr><th>Source</th><th>Status</th><th>License</th><th>Control</th></tr></thead><tbody>
+{% for source in sources %}<tr><td>{{ source.name }}</td><td>{% if source.enabled %}<span class="pill success">Enabled</span>{% else %}<span class="pill">Disabled</span>{% endif %}</td><td>{{ source.license_status }}</td>
+<td><form class="inline" method="post" action="{% url 'collector-action' %}">{% csrf_token %}<input type="hidden" name="source" value="{{ source.name }}">
+{% if source.enabled %}<button name="action" value="disable">Disable</button>{% else %}<button name="action" value="enable">Enable</button>{% endif %}
+<button name="action" value="sync">Queue sync</button><button name="action" value="cancel">Stop</button></form></td></tr>
+{% empty %}<tr><td colspan="4" class="empty">Chưa đăng ký nguồn. Chạy list_data_sources.</td></tr>{% endfor %}</tbody></table>
+<details><summary>Historical backfill · CFTC</summary><form class="formrow" method="post" action="{% url 'collector-action' %}">{% csrf_token %}
+<input type="hidden" name="source" value="cftc"><input type="hidden" name="action" value="backfill">
+<label>Start<input type="date" name="start" required></label><label>End<input type="date" name="end" required></label>
+<label>Report<select name="report_type"><option value="legacy">Legacy</option><option value="disaggregated">Disaggregated</option><option value="tff">TFF</option></select></label>
+<label>Scope<select name="scope"><option value="futures_only">Futures only</option><option value="combined">Combined</option></select></label>
+<label>Market code<input name="market_code" placeholder="Optional"></label><button>Queue backfill</button></form></details>
+<table><thead><tr><th>Job</th><th>Source / Type</th><th>Status</th><th>Files</th><th>Inserted / Updated / Rejected</th><th>Started</th><th>Error</th></tr></thead><tbody>
+{% for job in jobs %}<tr><td>#{{ job.id }}</td><td>{{ job.source.name }} / {{ job.job_type }}</td><td class="{{ job.status }}">{{ job.status }}{% if job.cancel_requested %} · stop requested{% endif %}</td><td>{{ job.records_downloaded }}</td><td>{{ job.records_inserted }} / {{ job.records_updated }} / {{ job.records_rejected }}</td><td>{{ job.started_at|date:"Y-m-d H:i" }}</td><td class="error">{{ job.error_message }}</td></tr>{% empty %}<tr><td colspan="7" class="empty">No collector jobs recorded.</td></tr>{% endfor %}</tbody></table></section>
+<section id="explorer"><h2>Data explorer</h2><p class="muted">20 observations per dataset. Dùng API để lọc và phân trang đầy đủ.</p>
+{% for label,count in counts.items %}<span class="pill">{{ label }}: {{ count }}</span> {% endfor %}
+<details open><summary>COT observations</summary><table><tr><th>Date</th><th>Market</th><th>Report</th><th>Scope</th><th>Open interest</th></tr>
+{% for row in cot %}<tr><td>{{ row.report_date|date:"Y-m-d" }}</td><td>{{ row.market_code }} · {{ row.market_name }}</td><td>{{ row.report_type }}</td><td>{{ row.futures_options_scope }}</td><td>{{ row.open_interest }}</td></tr>{% empty %}<tr><td class="empty">No COT observations.</td></tr>{% endfor %}</table></details>
+<details><summary>Futures daily statistics</summary><table><tr><th>Date</th><th>Instrument / Scope</th><th>Volume</th><th>OI / Change</th><th>Status</th></tr>
+{% for row in stats %}<tr><td>{{ row.trading_date|date:"Y-m-d" }}</td><td>{{ row.instrument.symbol }} / {{ row.instrument.contract_type }}</td><td>{{ row.volume }}</td><td>{{ row.open_interest }} / {{ row.change_in_oi }}</td><td>{{ row.report_status }}</td></tr>{% empty %}<tr><td class="empty">No daily statistics.</td></tr>{% endfor %}</table></details>
+<details><summary>OHLCV · UTC</summary><table><tr><th>Timestamp</th><th>Instrument</th><th>Timeframe / Price type</th><th>O / H / L / C</th><th>Volume / Type</th></tr>
+{% for row in bars %}<tr><td>{{ row.timestamp_utc|date:"Y-m-d H:i:s" }}</td><td>{{ row.instrument.symbol }}</td><td>{{ row.timeframe }} / {{ row.price_type }}</td><td>{{ row.open }} / {{ row.high }} / {{ row.low }} / {{ row.close }}</td><td>{{ row.volume|default_if_none:"—" }} / {{ row.volume_type }}</td></tr>{% empty %}<tr><td class="empty">No OHLCV observations.</td></tr>{% endfor %}</table></details>
+<details><summary>Instrument metadata</summary><table><tr><th>Exchange</th><th>Symbol</th><th>Contract type</th><th>Expiration</th><th>Metadata</th></tr>
+{% for row in metadata %}<tr><td>{{ row.exchange }}</td><td>{{ row.symbol }}</td><td>{{ row.contract_type }}</td><td>{{ row.expiration_date|default_if_none:"Not supplied" }}</td><td>{{ row.metadata }}</td></tr>{% empty %}<tr><td class="empty">No instruments.</td></tr>{% endfor %}</table></details></section>
+<section id="quality"><h2>Data quality & coverage</h2><p class="muted">Cảnh báo gap là tín hiệu kiểm tra, không tự suy ra ngày nghỉ hoặc nội suy dữ liệu. Chạy check_data_quality để quét.</p>
+<table><tr><th>Severity</th><th>Source / Dataset</th><th>Issue</th><th>Evidence</th></tr>
+{% for row in issues %}<tr><td>{{ row.severity }}</td><td>{{ row.source.name }} / {{ row.dataset }}</td><td>{{ row.issue_type }}</td><td class="error">{{ row.description }}</td></tr>{% empty %}<tr><td class="empty">No open issues recorded. This does not certify full coverage.</td></tr>{% endfor %}</table>
+<table><tr><th>Source</th><th>Report</th><th>Scope</th><th>Observed records</th><th>Latest date</th></tr>
+{% for row in coverage %}<tr><td>{{ row.source__name }}</td><td>{{ row.report_type }}</td><td>{{ row.futures_options_scope }}</td><td>{{ row.records }}</td><td>{{ row.latest|date:"Y-m-d" }}</td></tr>{% empty %}<tr><td class="empty">No COT coverage recorded.</td></tr>{% endfor %}</table></section>
+<section id="exports"><h2>Export observations</h2><p class="muted">CSV streaming và Parquet theo batch. Bản xuất giữ scope/source và provenance IDs; raw_fields có trong API chi tiết.</p>
+<form class="formrow" id="exportForm"><label>Dataset<select id="dataset"><option value="cot">COT</option><option value="open-interest">Daily statistics</option><option value="ohlcv">OHLCV</option><option value="instruments">Instruments</option></select></label>
+<label>Format<select name="file_format"><option value="csv">CSV</option><option value="parquet">Parquet</option></select></label>
+<label>Start<input type="date" name="start"></label><label>End<input type="date" name="end"></label><button>Download</button></form></section>
+<p class="muted">Local · Authenticated staff access · All displayed counts come from the database.</p></main>
+<script>document.getElementById('exportForm').addEventListener('submit',function(e){e.preventDefault();const p=new URLSearchParams();for(const [k,v] of new FormData(this))if(v)p.set(k,v);location.href='/api/v1/export/'+document.getElementById('dataset').value+'/?'+p.toString();});</script>
+</body></html>
+

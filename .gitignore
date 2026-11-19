@@ -1,0 +1,11 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.sqlite3
+raw_data/
+exports/
+live_evidence/
+*.log
+local_secret.txt

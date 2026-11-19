@@ -1,0 +1,22 @@
+﻿{
+  "symbol": "ES_SAMPLE_CONTINUOUS",
+  "name": "FirstRate ES SAMPLE",
+  "exchange": "CME",
+  "asset_class": "future",
+  "contract_type": "continuous_future",
+  "currency": "USD",
+  "timeframe": "1m",
+  "timezone": "America/New_York",
+  "price_type": "trade",
+  "volume_type": "trade",
+  "source_url": "https://firstratedata.com/i/futures/ES",
+  "license_status": "unverified",
+  "license_url": "https://firstratedata.com/about/license",
+  "sample": true,
+  "start": "2026-10-19",
+  "end": "2026-11-03",
+  "adjustment_method": "unspecified_by_sample_filename",
+  "member": "ES_1min_sample.csv",
+  "header": true
+}
+
